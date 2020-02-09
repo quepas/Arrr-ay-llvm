@@ -4,10 +4,17 @@ grammar arrr_ay;
 NEWLINE : [\r\n]+ ;
 INT     : [0-9]+ ;
 
+MUL : '*';
+DIV: '/';
+ADD: '+';
+SUB: '-';
+
 // Grammar rules
-prog:	(expr NEWLINE)* ;
-expr:	expr ('*'|'/') expr
-    |	expr ('+'|'-') expr
-    |	INT
-    |	'(' expr ')'
+program: (expr ';')* ;
+number: INT;
+
+expr: '(' expr ')'                        # exprParentheses
+    | left=expr op=(MUL | DIV) right=expr # exprMulDiv
+    | left=expr op=(ADD | SUB) right=expr # exprAddSub
+    | number                              # exprNumber
     ;

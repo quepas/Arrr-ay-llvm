@@ -42,3 +42,6 @@ CPackSourceConfig.cmake
 Makefile
 bin/
 dist/
+
+# Arrr-ay project
+src/parser/
