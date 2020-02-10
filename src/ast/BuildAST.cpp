@@ -4,10 +4,7 @@
 
 #include "../parser/arrr_ayLexer.h"
 #include "BuildAST.h"
-#include "BinaryOp.h"
-#include "Number.h"
-#include "Parentheses.h"
-#include "Program.h"
+#include "AST.h"
 
 using antlrcpp::Any;
 using std::make_shared;

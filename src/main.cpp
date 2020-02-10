@@ -1,9 +1,9 @@
 #include "antlr4-runtime.h"
 #include "parser/arrr_ayLexer.h"
 #include "parser/arrr_ayParser.h"
+#include "ast/PrintAST.h"
+#include "ast/AST.h"
 #include "ast/BuildAST.h"
-#include "ast/Node.h"
-#include "ast/Program.h"
 
 #include <iostream>
 
@@ -23,6 +23,9 @@ int main() {
     ast_root = build_ast.visit(tree);
 
     std::cout << "Abstract tree: \n" << ast_root->to_string() << std::endl;
+
+    PrintAST printAst;
+    printAst.visit(ast_root.get());
 
     return 0;
 }

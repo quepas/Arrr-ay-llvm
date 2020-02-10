@@ -23,7 +23,7 @@ set(ARRR_AY_SOURCES
         ${ARRR_AY_PARSER_DIR}/arrr_ayLexer.cpp
         ${ARRR_AY_PARSER_DIR}/arrr_ayListener.cpp
         ${ARRR_AY_PARSER_DIR}/arrr_ayParser.cpp
-        ${ARRR_AY_PARSER_DIR}/arrr_ayVisitor.cpp src/ast/Parentheses.h)
+        ${ARRR_AY_PARSER_DIR}/arrr_ayVisitor.cpp)
 
 # Add pre-installed LLVM
 find_package(LLVM REQUIRED CONFIG)
@@ -38,10 +38,12 @@ llvm_map_components_to_libnames(LLVM_LIBS Core ExecutionEngine Interpreter MC MC
 add_executable(arrr-ay-repl
         ${ARRR_AY_SOURCES}
         src/main.cpp
-        src/ast/Number.h
-        src/ast/Expression.h
         src/ast/BuildAST.cpp
         src/ast/BuildAST.h
-        src/ast/Node.h
-        src/ast/BinaryOp.h src/ast/Program.h)
+        src/ast/VisitorAST.h
+        src/ast/BaseVisitorAST.h
+        src/ast/BaseVisitorAST.cpp
+        src/ast/PrintAST.h
+        src/ast/AST.cpp
+        src/ast/AST.h)
 target_link_libraries(arrr-ay-repl ${LLVM_LIBS} antlr4_static)
