@@ -7,9 +7,19 @@
 #include "codegen/EasyCodegen.h"
 
 #include <iostream>
+#include <llvm/ExecutionEngine/ExecutionEngine.h>
+#include <llvm/ExecutionEngine/GenericValue.h>
+#include "llvm/IR/Constants.h"
+#include "llvm/IR/Function.h"
+#include "llvm/IR/Module.h"
+#include "llvm/Support/TargetSelect.h"
+#include "llvm/Support/raw_ostream.h"
 
 int main() {
-    antlr4::ANTLRInputStream input("1+2;");
+    llvm::InitializeNativeTarget();
+    llvm::InitializeNativeTargetAsmPrinter();
+
+    antlr4::ANTLRInputStream input("1+2-5+134;");
     arrr_ayLexer lexer(&input);
     antlr4::CommonTokenStream tokens(&lexer);
     tokens.fill();
@@ -28,9 +38,21 @@ int main() {
     PrintAST printAst;
     printAst.visit(ast_root.get());
 
-    EasyCodegen easy_codegen;
+    llvm::LLVMContext context;
+    auto module = std::make_unique<llvm::Module>("arrr-ay-jit", context);
+
+    EasyCodegen easy_codegen(context, module);
     auto val = easy_codegen.visit(ast_root.get());
     llvm::Value* value = std::any_cast<llvm::Value*>(val);
     value->print(llvm::errs(), false);
+
+    std::vector<llvm::GenericValue> Args(0);
+    std::string error_str;
+    llvm::ExecutionEngine* execution_engine = llvm::EngineBuilder(std::move(module))
+            .setErrorStr(&error_str)
+            .create();
+    std::cout << "Errors=" << error_str << std::endl;
+    llvm::GenericValue result = execution_engine->runFunction(static_cast<llvm::Function *>(value), Args);
+    std::cout << "Result=" << result.DoubleVal << std::endl;
     return 0;
 }

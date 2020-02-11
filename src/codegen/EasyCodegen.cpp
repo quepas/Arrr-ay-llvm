@@ -7,6 +7,7 @@
 
 #include <llvm/IR/Constants.h>
 #include <iostream>
+#include <memory>
 
 using std::any_cast;
 using std::any;
@@ -42,7 +43,7 @@ any EasyCodegen::visitProgram(ast::Program *program) {
     std::vector<llvm::Type *> types;
     llvm::FunctionType *function_type = llvm::FunctionType::get(llvm::Type::getDoubleTy(context), types, false);
     llvm::Function *function = llvm::Function::Create(function_type, llvm::Function::InternalLinkage, "lambda_anon",
-                                                      module);
+                                                      module.get());
     auto expr = program->getExpressions()[0];
     auto expr_val = visit(expr.get());
     // Create basic block
@@ -52,10 +53,12 @@ any EasyCodegen::visitProgram(ast::Program *program) {
     return static_cast<llvm::Value *>(function);
 }
 
-EasyCodegen::EasyCodegen() : module("arrr-ay-jit", context) {
-    builder = new llvm::IRBuilder(context);
-}
-
 EasyCodegen::~EasyCodegen() {
     delete builder;
 }
+
+EasyCodegen::EasyCodegen(llvm::LLVMContext &context, std::unique_ptr<llvm::Module> &module) : context(context),
+                                                                                              module(module) {
+    builder = new llvm::IRBuilder(context);
+}
+

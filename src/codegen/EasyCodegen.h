@@ -7,12 +7,13 @@
 
 #include <llvm/IR/LLVMContext.h>
 #include <llvm/IR/IRBuilder.h>
+#include <llvm/ExecutionEngine/ExecutionEngine.h>
 #include "../ast/BaseVisitorAST.h"
 
 class EasyCodegen : public BaseVisitorAST {
 
 public:
-    EasyCodegen();
+    EasyCodegen(llvm::LLVMContext &context, std::unique_ptr<llvm::Module> &module);
 
     virtual ~EasyCodegen();
 
@@ -25,9 +26,9 @@ public:
     std::any visitNumber(ast::Number *number) override;
 
 private:
-    llvm::LLVMContext context;
+    llvm::LLVMContext& context;
     llvm::IRBuilder<> *builder;
-    llvm::Module module;
+    std::unique_ptr<llvm::Module>& module;
 
 };
 
