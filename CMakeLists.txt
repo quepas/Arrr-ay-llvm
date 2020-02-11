@@ -45,5 +45,7 @@ add_executable(arrr-ay-repl
         src/ast/BaseVisitorAST.cpp
         src/ast/PrintAST.h
         src/ast/AST.cpp
-        src/ast/AST.h)
+        src/ast/AST.h
+        src/codegen/EasyCodegen.cpp
+        src/codegen/EasyCodegen.h)
 target_link_libraries(arrr-ay-repl ${LLVM_LIBS} antlr4_static)

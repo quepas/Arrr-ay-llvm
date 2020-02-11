@@ -23,6 +23,10 @@ namespace ast {
         return visitor->visitNumber(this);
     }
 
+    double Number::getValue() const {
+        return value;
+    }
+
     string Parentheses::to_string() {
         return "(" + expr->to_string() + ")";
     }
@@ -63,6 +67,18 @@ namespace ast {
         return visitor->visitBinaryOp(this);
     }
 
+    const std::shared_ptr<ast::Expression> &BinaryOp::getLeft() const {
+        return left;
+    }
+
+    const std::shared_ptr<ast::Expression> &BinaryOp::getRight() const {
+        return right;
+    }
+
+    BinaryOp::Op BinaryOp::getOp() const {
+        return op;
+    }
+
     string Program::to_string() {
         string str;
         for (auto &expr : expressions) {
@@ -82,6 +98,10 @@ namespace ast {
 
     any Program::accept(VisitorAST *visitor) {
         return visitor->visitProgram(this);
+    }
+
+    const vector<std::shared_ptr<Expression>> &Program::getExpressions() const {
+        return expressions;
     }
 
 }

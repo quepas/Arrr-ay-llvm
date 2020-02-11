@@ -4,11 +4,12 @@
 #include "ast/PrintAST.h"
 #include "ast/AST.h"
 #include "ast/BuildAST.h"
+#include "codegen/EasyCodegen.h"
 
 #include <iostream>
 
 int main() {
-    antlr4::ANTLRInputStream input("1+2-(3/4);2+3;");
+    antlr4::ANTLRInputStream input("1+2;");
     arrr_ayLexer lexer(&input);
     antlr4::CommonTokenStream tokens(&lexer);
     tokens.fill();
@@ -27,5 +28,9 @@ int main() {
     PrintAST printAst;
     printAst.visit(ast_root.get());
 
+    EasyCodegen easy_codegen;
+    auto val = easy_codegen.visit(ast_root.get());
+    llvm::Value* value = std::any_cast<llvm::Value*>(val);
+    value->print(llvm::errs(), false);
     return 0;
 }

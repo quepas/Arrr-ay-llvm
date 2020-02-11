@@ -42,6 +42,8 @@ namespace ast {
 
         std::any accept(VisitorAST *visitor) override;
 
+        double getValue() const;
+
     };
 
     class Parentheses : public Expression {
@@ -75,6 +77,12 @@ namespace ast {
 
         std::any accept(VisitorAST *visitor) override;
 
+        const std::shared_ptr<ast::Expression> &getLeft() const;
+
+        const std::shared_ptr<ast::Expression> &getRight() const;
+
+        Op getOp() const;
+
     private:
         std::shared_ptr<ast::Expression> left, right;
         Op op;
@@ -89,6 +97,8 @@ namespace ast {
         std::vector<Node *> GetTraversalOrder() override;
 
         std::any accept(VisitorAST *visitor) override;
+
+        const std::vector<std::shared_ptr<Expression>> &getExpressions() const;
 
     private:
         std::vector<std::shared_ptr<Expression>> expressions;
