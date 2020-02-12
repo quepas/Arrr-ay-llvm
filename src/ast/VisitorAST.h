@@ -6,6 +6,7 @@
 #define ARRR_AY_LLVM_VISITORAST_H
 
 namespace ast {
+    class Array;
     class Node;
     class Number;
     class BinaryOp;
@@ -37,6 +38,8 @@ public:
     virtual std::any visitParentheses(ast::Parentheses *parentheses) = 0;
 
     virtual std::any visitProgram(ast::Program *program) = 0;
+
+    virtual std::any visitArray(ast::Array *array) = 0;
 
 };
 

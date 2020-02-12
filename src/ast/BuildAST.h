@@ -23,6 +23,8 @@ public:
 
     antlrcpp::Any visitProgram(arrr_ayParser::ProgramContext *context) override;
 
+    antlrcpp::Any visitExprArray(arrr_ayParser::ExprArrayContext *ctx) override;
+
 };
 
 

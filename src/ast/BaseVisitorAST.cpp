@@ -50,3 +50,7 @@ any BaseVisitorAST::visitParentheses(ast::Parentheses *parentheses) {
 any BaseVisitorAST::visitProgram(ast::Program *program) {
     return visitChildren(program);
 }
+
+any BaseVisitorAST::visitArray(ast::Array *array) {
+    return visitChildren(array);
+}

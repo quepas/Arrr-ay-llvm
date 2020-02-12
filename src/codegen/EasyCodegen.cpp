@@ -44,6 +44,7 @@ any EasyCodegen::visitProgram(ast::Program *program) {
     llvm::FunctionType *function_type = llvm::FunctionType::get(llvm::Type::getDoubleTy(context), types, false);
     llvm::Function *function = llvm::Function::Create(function_type, llvm::Function::InternalLinkage, "lambda_anon",
                                                       module.get());
+    // TODO: generate code for all expressions in a program
     auto expr = program->getExpressions()[0];
     auto expr_val = visit(expr.get());
     // Create basic block
@@ -60,5 +61,16 @@ EasyCodegen::~EasyCodegen() {
 EasyCodegen::EasyCodegen(llvm::LLVMContext &context, std::unique_ptr<llvm::Module> &module) : context(context),
                                                                                               module(module) {
     builder = new llvm::IRBuilder(context);
+}
+
+any EasyCodegen::visitArray(ast::Array *array) {
+    std::vector<double> elements;
+    elements.reserve(array->getElements().size());
+
+    for (auto& element : array->getElements()) {
+        elements.push_back(dynamic_cast<ast::Number*>(element.get())->getValue());
+    }
+    llvm::ArrayRef array_ref(elements);
+    return static_cast<llvm::Value *>(llvm::ConstantDataArray::get(context, array_ref));
 }
 

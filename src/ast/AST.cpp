@@ -3,6 +3,8 @@
 //
 
 #include "AST.h"
+
+#include <utility>
 #include "VisitorAST.h"
 
 using std::any;
@@ -90,8 +92,8 @@ namespace ast {
     vector<Node *> Program::GetTraversalOrder() {
         vector<Node *> result;
         result.reserve(expressions.size());
-        for (int i = 0; i < expressions.size(); ++i) {
-            result.push_back(expressions[i].get());
+        for (int idx = 0; idx < expressions.size(); ++idx) {
+            result.push_back(expressions[idx].get());
         }
         return result;
     }
@@ -104,4 +106,34 @@ namespace ast {
         return expressions;
     }
 
+    string Array::to_string() {
+        string str = "[";
+        for (int idx = 0; idx < elements.size(); ++idx) {
+            str += elements[idx]->to_string();
+            if (idx + 1 != elements.size()) {
+                str += ", ";
+            }
+        }
+        str += "]";
+        return str;
+    }
+
+    any Array::accept(VisitorAST *visitor) {
+        return visitor->visitArray(this);
+    }
+
+    vector<Node *> Array::GetTraversalOrder() {
+        vector<Node *> result;
+        result.reserve(elements.size());
+        for (int idx = 0; idx < elements.size(); ++idx) {
+            result.push_back(elements[idx].get());
+        }
+        return result;
+    }
+
+    Array::Array(vector<std::shared_ptr<Expression>> elements) : elements(std::move(elements)) {}
+
+    const vector<std::shared_ptr<Expression>> &Array::getElements() const {
+        return elements;
+    }
 }

@@ -66,3 +66,14 @@ antlrcpp::Any BuildAST::visitProgram(arrr_ayParser::ProgramContext *context) {
     return make_shared<ast::Program>(program);
 }
 
+Any BuildAST::visitExprArray(arrr_ayParser::ExprArrayContext *ctx) {
+    shared_ptr<ast::Expression> array;
+    vector<shared_ptr<ast::Expression>> elements;
+    elements.reserve(ctx->number().size());
+    for (auto& expr : ctx->number()) {
+        elements.push_back(visit(expr));
+    }
+    array = make_shared<ast::Array>(elements);
+    return array;
+}
+

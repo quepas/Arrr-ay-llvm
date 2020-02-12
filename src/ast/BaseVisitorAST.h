@@ -6,6 +6,7 @@
 #define ARRR_AY_LLVM_BASEVISITORAST_H
 
 #include "VisitorAST.h"
+#include "AST.h"
 
 class BaseVisitorAST : public VisitorAST {
 public:
@@ -26,6 +27,8 @@ public:
     std::any visitParentheses(ast::Parentheses *parentheses) override;
 
     std::any visitProgram(ast::Program *program) override;
+
+    std::any visitArray(ast::Array *array) override;
 
 };
 

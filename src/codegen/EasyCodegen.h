@@ -25,6 +25,8 @@ public:
 
     std::any visitNumber(ast::Number *number) override;
 
+    std::any visitArray(ast::Array *array) override;
+
 private:
     llvm::LLVMContext& context;
     llvm::IRBuilder<> *builder;

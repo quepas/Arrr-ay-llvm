@@ -46,6 +46,21 @@ namespace ast {
 
     };
 
+    class Array : public Expression {
+    private:
+        std::vector<std::shared_ptr<Expression>> elements;
+    public:
+        Array(std::vector<std::shared_ptr<Expression>> elements);
+
+        std::string to_string() override;
+
+        std::any accept(VisitorAST *visitor) override;
+
+        std::vector<Node *> GetTraversalOrder() override;
+
+        const std::vector<std::shared_ptr<Expression>> &getElements() const;
+    };
+
     class Parentheses : public Expression {
     private:
         std::shared_ptr<Expression> expr;
