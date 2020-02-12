@@ -35,7 +35,7 @@ int main(int argc, char **argv) {
     EasyJIT easy_jit;
 
     if (argc > 1) {
-        std::cout << "args=" << argv[1] << std::endl;
+        std::cout << "Input code=" << argv[1] << std::endl;
         execute(easy_jit, argv[1]);
     } else {
         while (true) {

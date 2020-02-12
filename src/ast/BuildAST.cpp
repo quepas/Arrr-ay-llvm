@@ -13,7 +13,7 @@ using std::stod;
 using std::vector;
 
 antlrcpp::Any BuildAST::visitNumber(arrr_ayParser::NumberContext *context) {
-    shared_ptr<ast::Expression> result = make_shared<ast::Number>(stod(context->INT()->getText()));
+    shared_ptr<ast::Expression> result = make_shared<ast::Number>(stod(context->FLOATING_POINT()->getText()));
     return result;
 }
 
