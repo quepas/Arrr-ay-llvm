@@ -24,8 +24,10 @@ antlrcpp::Any BuildAST::visitExprAddSub(arrr_ayParser::ExprAddSubContext *contex
     switch(context->op->getType()) {
         case arrr_ayLexer::ADD:
             result = make_shared<ast::BinaryOp>(ast::BinaryOp::ADD, left, right);
+            break;
         case arrr_ayLexer::SUB:
             result = make_shared<ast::BinaryOp>(ast::BinaryOp::SUB, left, right);
+            break;
     }
     return result;
 }
@@ -41,8 +43,10 @@ antlrcpp::Any BuildAST::visitExprMulDiv(arrr_ayParser::ExprMulDivContext *contex
     switch(context->op->getType()) {
         case arrr_ayLexer::MUL:
             result = make_shared<ast::BinaryOp>(ast::BinaryOp::MUL, left, right);
+            break;
         case arrr_ayLexer::DIV:
             result = make_shared<ast::BinaryOp>(ast::BinaryOp::DIV, left, right);
+            break;
     }
     return result;
 }
